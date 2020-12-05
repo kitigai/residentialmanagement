@@ -1,5 +1,4 @@
 import React from "react";
-import { useIntl } from "react-intl";
 import {
   ProSidebar,
   Menu,
@@ -18,32 +17,32 @@ import {
   FaHeart
 } from "react-icons/fa";
 
-const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
-  const intl = useIntl();
+import Button from "react-bootstrap/Button";
+import "react-pro-sidebar/dist/css/styles.css";
+
+const Aside = ({
+  image,
+  collapsed,
+  setCollapsed,
+  rtl,
+  toggled,
+  handleToggleSidebar
+}) => {
+  const col = collapsed;
   return (
     <ProSidebar
-      image={image ? sidebarBg : false}
       rtl={rtl}
       collapsed={collapsed}
       toggled={toggled}
       breakPoint="md"
       onToggle={handleToggleSidebar}
     >
-      <SidebarHeader>
-        <div
-          style={{
-            padding: "24px",
-            textTransform: "uppercase",
-            fontWeight: "bold",
-            fontSize: 14,
-            letterSpacing: "1px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap"
-          }}
-        >
-          {intl.formatMessage({ id: "sidebarTitle" })}
-        </div>
+      <SidebarHeader icon={<FaGem />}>
+        <Menu iconShape="circle">
+          <MenuItem icon={<FaList />} onClick={() => setCollapsed(!collapsed)}>
+            Test
+          </MenuItem>
+        </Menu>
       </SidebarHeader>
       <Menu iconShape="circle">
         <MenuItem icon={<FaTachometerAlt />}>aaaaa</MenuItem>
@@ -56,3 +55,5 @@ const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }) => {
     </ProSidebar>
   );
 };
+
+export default Aside;
