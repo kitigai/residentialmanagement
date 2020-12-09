@@ -1,50 +1,25 @@
 import React from "react";
 import "./styles.scss";
+import { Switch, Route } from "react-router-dom";
 
-import Table from "react-bootstrap/Table";
-import "bootstrap/dist/css/bootstrap.min.css";
-
-const ExampleTable = () => {
-  return (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Username</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td colSpan="2">Larry the Bird</td>
-          <td>@twitter</td>
-        </tr>
-      </tbody>
-    </Table>
-  );
-};
+import TransferPage from "./TransferPage";
+import GuaranteePage from "./GuaranteePage";
+import HomePage from "./HomePage";
 
 const Main = () => {
   return (
     <main>
-      <header>aaaai</header>
-      <div className="block">
-        <ExampleTable />
-      </div>
+      <Switch>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+        <Route exact path="/transfer">
+          <TransferPage />
+        </Route>
+        <Route exact path="/guarantee">
+          <GuaranteePage />
+        </Route>
+      </Switch>
     </main>
   );
 };

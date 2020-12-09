@@ -16,8 +16,8 @@ import {
   FaRegLaughWink,
   FaHeart
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-import Button from "react-bootstrap/Button";
 import "react-pro-sidebar/dist/css/styles.css";
 
 const Aside = ({
@@ -28,13 +28,12 @@ const Aside = ({
   toggled,
   handleToggleSidebar
 }) => {
-  const col = collapsed;
   return (
     <ProSidebar
       rtl={rtl}
       collapsed={collapsed}
       toggled={toggled}
-      breakPoint="md"
+      breakPoint="xs"
       onToggle={handleToggleSidebar}
     >
       <SidebarHeader icon={<FaGem />}>
@@ -45,8 +44,15 @@ const Aside = ({
         </Menu>
       </SidebarHeader>
       <Menu iconShape="circle">
-        <MenuItem icon={<FaTachometerAlt />}>aaaaa</MenuItem>
-        <MenuItem icon={<FaGem />}>aaaa</MenuItem>
+        <MenuItem icon={<FaTachometerAlt />}>
+          <Link to="/" />
+        </MenuItem>
+        <MenuItem icon={<FaGem />}>
+          <Link to="/transfer">入金確認</Link>
+        </MenuItem>
+        <MenuItem icon={<FaGem />}>
+          <Link to="/guarantee">請求代行</Link>
+        </MenuItem>
         <SubMenu title="Components">
           <MenuItem>Component 1</MenuItem>
           <MenuItem>Component 2</MenuItem>
