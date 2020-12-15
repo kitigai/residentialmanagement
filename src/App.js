@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./styles.scss";
 import Aside from "./Aside";
 import Main from "./Main";
-
 import { BrowserRouter as Router } from "react-router-dom";
 
 const App = () => {

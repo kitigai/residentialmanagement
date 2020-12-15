@@ -20,6 +20,12 @@ body {
   height: 100%;
 }
 
+.fixed-table {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 500px;
+}
+
 .app {
   height: 100%;
   display: flex;

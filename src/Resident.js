@@ -1,0 +1,301 @@
+import React, { useState, useEffect } from "react";
+import Api from "./AjaxHelper";
+import { Line } from "react-chartjs-2";
+import { MDBContainer } from "mdbreact";
+import Card from "react-bootstrap/Card";
+import CardDeck from "react-bootstrap/CardDeck";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import Table from "react-bootstrap/Table";
+import CustomToast from "./CustomToast";
+import { FaPlus, FaTrash } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
+import "./styles.scss";
+
+const ResidentPage = ({ id, apartment_id }) => {
+  // with id update
+  // without id create
+  const history = useHistory();
+  const [fullName, setFullName] = useState();
+  const [roomNo, setRoomNo] = useState();
+  const [parkingLotNo, setParkingLotNo] = useState();
+  const [transferAmount, setTransferAmount] = useState();
+  const [transferSatisfiedMonth, setTransferSatisfiedMonth] = useState();
+  const [guaranteeCompany, setGuaranteeCompany] = useState();
+  const [apartmentName, setApartmentName] = useState();
+  const [transfer, setTransfer] = useState([]);
+  const [readonly, setReadonly] = useState(false);
+  const [buttonVisible, setButtonVisible] = useState(true);
+  const [showtoast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState({
+    message: "更新失敗",
+    class: "text-error"
+  });
+  const [modalShow, setModalShow] = useState(false);
+  const handleFullNameOnChange = (e) => {
+    setFullName(e.target.value);
+  };
+  const handleRoomNoOnChange = (e) => {
+    setRoomNo(e.target.value);
+  };
+  const handleParkingLotNoOnChange = (e) => {
+    setParkingLotNo(e.target.value);
+  };
+  const handleTransferAmountOnChange = (e) => {
+    setTransferAmount(e.target.value);
+  };
+  const handleTSMonthOnChange = (e) => {
+    setTransferSatisfiedMonth(e.target.value);
+  };
+  const handleGuaranteeCompanyOnChange = (e) => {
+    setGuaranteeCompany(e.target.value);
+  };
+  const handleShow = () => {
+    setReadonly(false);
+    setButtonVisible(false);
+  };
+  const handleCancel = () => {
+    setReadonly(true);
+    setButtonVisible(true);
+  };
+  const handleDelete = () => {
+    const api = new Api();
+    api
+      .deleteResident(id)
+      .then((response) => {
+        handleModalClose();
+        history.push("/apartment/" + apartment_id);
+      })
+      .catch((error) => {
+        setShowToast(true);
+        setToastMessage({
+          message: "更新失敗",
+          class: "text-danger"
+        });
+      });
+  };
+  const handleModalClose = () => setModalShow(false);
+  const handleModalShow = () => setModalShow(true);
+  const handleSave = () => {
+    const api = new Api();
+    const query = {
+      id: id,
+      fullName: fullName,
+      transferAmount: transferAmount,
+      transferSatisfiedMonth: transferSatisfiedMonth,
+      guaranteeCompany: guaranteeCompany,
+      roomNo: roomNo,
+      parkingLotNo: parkingLotNo,
+      apartment_id: apartment_id
+    };
+    if (id) {
+      // update
+      func = api.putResidents;
+    } else {
+      func = api.postResidents;
+    }
+    func(query)
+      .then((response) => {
+        setShowToast(true);
+        setToastMessage({
+          message: "更新成功",
+          class: "text-success"
+        });
+      })
+      .catch((error) => {
+        setShowToast(true);
+        setToastMessage({
+          message: "更新失敗",
+          class: "text-danger"
+        });
+      });
+    setReadonly(true);
+    setButtonVisible(true);
+  };
+  useEffect(() => {
+    if (!id) {
+      setReadonly(false);
+      setButtonVisible(false);
+    } else {
+      const api = new Api();
+      const query = { params: { id: id } };
+      api.getSingleResident(id).then((response) => {
+        const data = response.data[0];
+        setFullName(data.fullName);
+        setRoomNo(data.roomNo);
+        setParkingLotNo(data.parkingLotNo);
+        setTransferAmount(data.transferAmount);
+        setTransferSatisfiedMonth(data.transferSatisfiedMonth);
+        setGuaranteeCompany(data.guaranteeCompany);
+        setReadonly(true);
+        setTransfer(
+          data.transfer.map((d) => {
+            return (
+              <tr key={d.id}>
+                <td>{d.transferAmount}</td>
+                <td>{d.transferDate}</td>
+              </tr>
+            );
+          })
+        );
+      });
+    }
+    const api = new Api();
+    const query = { params: { id: apartment_id } };
+    api.getApartments(query).then((response) => {
+      setApartmentName(response.data[0].name);
+    });
+  }, []);
+  return (
+    <>
+      <div className="container pb-3 mb-5 pt-3 border-bottom">
+        <h1>入居者詳細</h1>
+        <Button
+          variant="light"
+          className="float-right"
+          onClick={handleModalShow}
+        >
+          <FaTrash />
+        </Button>
+      </div>
+      <CardDeck>
+        <Card className="col-sm-4 m-2">
+          <Card.Body>
+            <Form>
+              <Form.Group controlId="name">
+                <Form.Label className="mb-0">氏名</Form.Label>
+                <Form.Control
+                  type="text"
+                  defaultValue={fullName}
+                  onChange={handleFullNameOnChange}
+                  readOnly={readonly}
+                  plaintext={readonly}
+                  className="text-secondary pt-0"
+                />
+              </Form.Group>
+              <Form.Group controlId="roomNo">
+                <Form.Label className="mb-0">部屋番号</Form.Label>
+                <Form.Control
+                  type="text"
+                  defaultValue={roomNo}
+                  onChange={handleRoomNoOnChange}
+                  readOnly={readonly}
+                  plaintext={readonly}
+                  className="text-secondary pt-0"
+                />
+              </Form.Group>
+              <Form.Group controlId="parking">
+                <Form.Label className="mb-0">駐車場番号</Form.Label>
+                <Form.Control
+                  type="text"
+                  defaultValue={parkingLotNo}
+                  onChange={handleParkingLotNoOnChange}
+                  readOnly={readonly}
+                  plaintext={readonly}
+                  className="text-secondary pt-0"
+                />
+              </Form.Group>
+              <Form.Group controlId="transfer">
+                <Form.Label className="mb-0">金額</Form.Label>
+                <Form.Control
+                  type="number"
+                  defaultValue={transferAmount}
+                  onChange={handleTransferAmountOnChange}
+                  readOnly={readonly}
+                  plaintext={readonly}
+                  className="text-secondary pt-0"
+                />
+              </Form.Group>
+              <Form.Group controlId="transfer">
+                <Form.Label className="mb-0">支払済月</Form.Label>
+                <Form.Control
+                  type="date"
+                  defaultValue={transferSatisfiedMonth}
+                  onChange={handleTransferAmountOnChange}
+                  readOnly={readonly}
+                  plaintext={readonly}
+                  className="text-secondary pt-0"
+                />
+              </Form.Group>
+              <Form.Group controlId="company">
+                <Form.Label className="mb-0">保証会社</Form.Label>
+                <Form.Control
+                  type="text"
+                  defaultValue={guaranteeCompany}
+                  onChange={handleGuaranteeCompanyOnChange}
+                  readOnly={readonly}
+                  plaintext={readonly}
+                  className="text-secondary pt-0"
+                />
+              </Form.Group>
+              <Form.Group controlId="name">
+                <Form.Label className="mb-0">物件</Form.Label>
+                <Form.Control
+                  type="text"
+                  defaultValue={apartmentName}
+                  readOnly
+                  plaintext
+                  className="text-secondary pt-0"
+                />
+              </Form.Group>
+            </Form>
+            {buttonVisible ? (
+              <Button variant="outline-primary" onClick={handleShow}>
+                変更
+              </Button>
+            ) : (
+              <>
+                <Button variant="outline-success" onClick={handleSave}>
+                  保存
+                </Button>
+                <Button variant="outline-secondary" onClick={handleCancel}>
+                  キャンセル
+                </Button>
+              </>
+            )}
+          </Card.Body>
+        </Card>
+        <Card className="col-sm-8 m-2">
+          <Card.Body>
+            <Card.Title className="mb-3 d-flex flex-row">
+              <h3 className="col-sm-11">支払い状況</h3>
+              <Button variant="light" className="float-right">
+                <FaPlus />
+              </Button>
+            </Card.Title>
+            <div className="fixed-table">
+              <Table hover>
+                <thead>
+                  <tr>
+                    <th>支払い金額</th>
+                    <th>支払日</th>
+                  </tr>
+                </thead>
+                <tbody>{transfer}</tbody>
+              </Table>
+            </div>
+          </Card.Body>
+        </Card>
+      </CardDeck>
+      <CustomToast
+        message={toastMessage}
+        show={showtoast}
+        setShow={setShowToast}
+      />
+      <Modal show={modalShow} onHide={handleModalClose}>
+        <Modal.Body className="text-danger">削除しますか？</Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleDelete}>
+            削除
+          </Button>
+          <Button variant="secondary" onClick={handleModalClose}>
+            キャンセル
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+};
+
+export default ResidentPage;

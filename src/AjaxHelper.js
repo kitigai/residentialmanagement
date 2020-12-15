@@ -29,11 +29,42 @@ export default class Api {
     return this.client;
   };
 
-  getResidents = (params) => {
-    return this.init().get("/residents", { params: params });
+  postResidents = (query) => {
+    return this.init().post("/residents", query);
+  };
+  putResidents = (query) => {
+    return this.init().put("/residents", query);
+  };
+  getResidents = (query) => {
+    return this.init().get("/residents", query);
+  };
+  getSingleResident = (id) => {
+    return this.init().get("/residents/" + id, {});
+  };
+  deleteResident = (id) => {
+    const query = { params: { id: id } };
+    return this.init().delete("residents", query);
+  };
+  getApartments = (data) => {
+    return this.init().get("/apartment", data);
   };
 
-  getApartments = (data) => {
-    return this.init().post("/apartment", data);
+  postApartments = (data) => {
+    return this.init().put("/apartment", data);
+  };
+
+  postTransfer = (transferDate, transferAmount, residents_id) => {
+    return this.init().post("/transfer", {
+      transferDate: transferDate,
+      transferAmount: transferAmount,
+      residents_id: residents_id
+    });
+  };
+
+  postBilling = (billingDate, residents_id) => {
+    return this.init().post("/billing", {
+      billingDate: billingDate,
+      residents_id: residents_id
+    });
   };
 }
