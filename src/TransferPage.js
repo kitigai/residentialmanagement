@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 
 import Api from "./AjaxHelper";
 import CustomToast from "./CustomToast";
@@ -199,14 +200,18 @@ const TransferRaw = ({
   return (
     <>
       <tr className={className} onClick={handleShow}>
-        <td>{fullName}</td>
+        <td>
+          <Link to={"/resident?id=" + id}>{fullName}</Link>
+        </td>
         <td>{lastTransferDate}</td>
-        <td>{lastTransferAmount}</td>
+        <td>
+          {lastTransferAmount ? "¥" + lastTransferAmount.toLocaleString() : ""}
+        </td>
         <td>{lastBillingDate}</td>
         <td>
           {year} 年 {month} 月
         </td>
-        <td>{transferAmount}</td>
+        <td>{"¥" + transferAmount}</td>
         <td>{guaranteeCompany}</td>
       </tr>
       <TransferModal

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
 import "./styles.scss";
 
 import Table from "react-bootstrap/Table";
@@ -199,7 +201,9 @@ const TransferRaw = ({
   return (
     <>
       <tr className={className} onClick={handleShow}>
-        <td>{fullName}</td>
+        <td>
+          <Link to={"/resident?id=" + id}>{fullName}</Link>
+        </td>
         <td>{lastTransferDate}</td>
         <td>{lastBillingDate}</td>
         <td>

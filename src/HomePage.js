@@ -30,7 +30,12 @@ const colorTableRGB = [
   "rgb(170, 128, 252",
   "rgb(255, 177, 101)"
 ];
-const makeSummaryChart = (setChartData, setSummaryChartData) => {
+const makeSummaryChart = (
+  setChartData,
+  setSummaryChartData,
+  setIncomes,
+  setApartmentData
+) => {
   const api = new Api();
   const today = new Date();
   const month = today.getMonth() + 1; //Becourse fucking zero padding
@@ -50,12 +55,22 @@ const makeSummaryChart = (setChartData, setSummaryChartData) => {
     datasets: []
   };
   let summarydatasets = JSON.parse(JSON.stringify(datasets));
+  let incomes = [];
   api.getApartments(query).then((res) => {
+    setApartmentData(res.data);
     const summed = Array.apply(null, Array(span)).map((i) => 0);
     datasets.datasets = res.data.map((apartment, idx) => {
-      // culcrate summary
+      // culclate total summary dataset
       apartment.transferSummary.forEach((element, idx) => {
         summed[idx] += element;
+      });
+      // calculate income summary
+      incomes.push({
+        name: apartment.name,
+        thisMonth:
+          apartment.transferSummary[apartment.transferSummary.length - 1],
+        lastMonth:
+          apartment.transferSummary[apartment.transferSummary.length - 2]
       });
       const r = Math.random() * 256;
       const g = Math.random() * 256;
@@ -91,6 +106,11 @@ const makeSummaryChart = (setChartData, setSummaryChartData) => {
         data: apartment.transferSummary
       };
     });
+    incomes.push({
+      name: "合計",
+      thisMonth: summed[summed.length - 1],
+      lastMonth: summed[summed.length - 2]
+    });
     summarydatasets.datasets.push({
       label: "summary",
       fill: true,
@@ -112,9 +132,33 @@ const makeSummaryChart = (setChartData, setSummaryChartData) => {
       pointHitRadius: 10,
       data: summed
     });
+    setIncomes(incomes);
     setSummaryChartData(summarydatasets);
     setChartData(datasets);
   });
+};
+const CustomTable = ({ data }) => {
+  const row = data.map((d) => {
+    return (
+      <tr key={d.id}>
+        <td>
+          <Link to={"/apartment?id=" + d.id}>{d.name}</Link>
+        </td>
+      </tr>
+    );
+  });
+  return (
+    <div className="fixed-table">
+      <Table hover>
+        <thead>
+          <tr>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>{row}</tbody>
+      </Table>
+    </div>
+  );
 };
 const CustomLineChart = ({ data }) => {
   return (
@@ -123,25 +167,91 @@ const CustomLineChart = ({ data }) => {
     </MDBContainer>
   );
 };
+const CustomSummary = ({ target, data }) => {
+  let title = target === "thisMonth" ? "今月収入" : "先月収入";
+  const targetdata = data.map((d) => {
+    return (
+      <div className="d-flex justify-content-between">
+        <p>{d.name}</p>
+        <p className="text-secondary ">{"¥" + d[target].toLocaleString()}</p>
+      </div>
+    );
+  });
+  return (
+    <>
+      <h5>{title}</h5>
+      <div className="border-bottom mt-3">
+        {targetdata.slice(0, targetdata.length - 1)}
+      </div>
+      <div>{targetdata.slice(-1)[0]}</div>
+    </>
+  );
+};
 const HomePage = () => {
   const [chartData, setChartData] = useState({});
   const [summaryData, setSummaryData] = useState({});
+  const [incomes, setIncomes] = useState([
+    { name: "test", thisMonth: 999, lastMonth: 999 }
+  ]);
+  const [incomeSummary, setIncomeSummary] = useState({});
+  const [apartmentData, setApartmentData] = useState([]);
   useEffect(() => {
-    makeSummaryChart(setChartData, setSummaryData);
+    makeSummaryChart(
+      setChartData,
+      setSummaryData,
+      setIncomes,
+      setApartmentData
+    );
   }, []);
   return (
-    <CardDeck>
-      <Card className="col-sm-9 m-2">
-        <Card.Body>
-          <CustomLineChart data={chartData} />
-        </Card.Body>
-      </Card>
-      <Card className="col-sm-9 m-2">
-        <Card.Body>
-          <CustomLineChart data={summaryData} />
-        </Card.Body>
-      </Card>
-    </CardDeck>
+    <>
+      <CardDeck>
+        <Card className="col-sm-6 m-2">
+          <Card.Body>
+            <Card.Title>
+              <h5>物件別売上</h5>
+            </Card.Title>
+            <CustomLineChart data={chartData} />
+          </Card.Body>
+        </Card>
+        <Card className="col-sm-6 m-2">
+          <Card.Body>
+            <Card.Title>
+              <h5>合計売上</h5>
+            </Card.Title>
+            <CustomLineChart data={summaryData} />
+          </Card.Body>
+        </Card>
+      </CardDeck>
+      <CardDeck>
+        <Card className="col-sm-6 m-2">
+          <Card.Body>
+            {" "}
+            <CustomSummary target="thisMonth" data={incomes} />
+          </Card.Body>
+        </Card>
+        <Card className="col-sm-6 m-2">
+          <Card.Body>
+            <CustomSummary target="lastMonth" data={incomes} />
+          </Card.Body>
+        </Card>
+      </CardDeck>
+      <CardDeck>
+        <Card className="col-sm-6 m-2">
+          <Card.Body>
+            <Card.Title className="mb-3 d-flex flex-row">
+              <h5 className="col-sm-11">物件一覧</h5>
+              <Button variant="light" className="float-right">
+                <Link to="/apartment" className="link">
+                  <FaPlus />
+                </Link>
+              </Button>
+            </Card.Title>
+            <CustomTable data={apartmentData} />
+          </Card.Body>
+        </Card>
+      </CardDeck>
+    </>
   );
 };
 

@@ -48,11 +48,16 @@ export default class Api {
   getApartments = (data) => {
     return this.init().get("/apartment", data);
   };
-
   postApartments = (data) => {
+    return this.init().post("/apartment", data);
+  };
+  putApartments = (data) => {
     return this.init().put("/apartment", data);
   };
-
+  deleteApartments = (id) => {
+    const query = { params: { id: id } };
+    return this.init().delete("/apartment", query);
+  };
   postTransfer = (transferDate, transferAmount, residents_id) => {
     return this.init().post("/transfer", {
       transferDate: transferDate,
@@ -60,7 +65,10 @@ export default class Api {
       residents_id: residents_id
     });
   };
-
+  deleteTransfer = (id) => {
+    const query = { params: { id: id } };
+    return this.init().delete("/transfer", query);
+  };
   postBilling = (billingDate, residents_id) => {
     return this.init().post("/billing", {
       billingDate: billingDate,

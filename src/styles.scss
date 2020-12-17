@@ -20,6 +20,12 @@ body {
   height: 100%;
 }
 
+.link {
+  color: rgb(0,0,0);
+}
+.link:hover {
+   color: #00F
+}
 .fixed-table {
   overflow-x: hidden;
   overflow-y: scroll;
@@ -32,6 +38,7 @@ body {
   position: relative;
 
   .btn-toggle {
+    padding:10px;
     cursor: pointer;
     width: 35px;
     height: 35px;

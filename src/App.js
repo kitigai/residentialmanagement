@@ -27,7 +27,7 @@ const App = () => {
           toggled={toggled}
           handleToggleSidebar={handleToggleSidebar}
         />
-        <Main />
+        <Main handleToggleSidebar={handleToggleSidebar} />
       </Router>
     </div>
   );

@@ -8,14 +8,8 @@ import {
   SidebarFooter,
   SidebarContent
 } from "react-pro-sidebar";
-import {
-  FaTachometerAlt,
-  FaGem,
-  FaList,
-  FaGithub,
-  FaRegLaughWink,
-  FaHeart
-} from "react-icons/fa";
+import { FaPenNib, FaGem, FaList, FaChartLine } from "react-icons/fa";
+import { BiTransfer } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 
@@ -56,19 +50,20 @@ const Aside = ({
     >
       <SidebarHeader icon={<FaGem />}>
         <Menu iconShape="circle">
-          <MenuItem icon={<FaList />} onClick={() => setCollapsed(!collapsed)}>
-            Test
-          </MenuItem>
+          <MenuItem
+            icon={<FaList />}
+            onClick={() => setCollapsed(!collapsed)}
+          ></MenuItem>
         </Menu>
       </SidebarHeader>
       <Menu iconShape="circle">
-        <MenuItem icon={<FaTachometerAlt />}>
+        <MenuItem icon={<FaChartLine />}>
           <Link to="/">Home</Link>
         </MenuItem>
-        <MenuItem icon={<FaGem />}>
+        <MenuItem icon={<BiTransfer />}>
           <Link to="/transfer">入金確認</Link>
         </MenuItem>
-        <MenuItem icon={<FaGem />}>
+        <MenuItem icon={<FaPenNib />}>
           <Link to="/guarantee">代弁請求</Link>
         </MenuItem>
         <SubMenu title="物件詳細">{items}</SubMenu>
