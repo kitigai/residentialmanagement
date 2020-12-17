@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import "./styles.scss";
 import Aside from "./Aside";
 import Main from "./Main";
-import { BrowserRouter as Router } from "react-router-dom";
+import LoadingPage from "./LoadingPage";
 
 const App = () => {
   const [rtl, setRtl] = useState(false);
@@ -31,4 +32,6 @@ const App = () => {
   );
 };
 
-export default App;
+export default withAuthenticationRequired(App, {
+  onRedirecting: () => <LoadingPage />
+});

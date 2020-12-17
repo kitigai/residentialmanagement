@@ -14,80 +14,6 @@ import { Link, useHistory } from "react-router-dom";
 
 import "./styles.scss";
 
-const CustomModal = ({
-  show,
-  handleClose,
-  argName,
-  argAddress,
-  id,
-  setToastMessage,
-  setShowToast
-}) => {
-  const [name, setName] = useState(argName);
-  const [address, setAddress] = useState(argAddress);
-  const handleNameOnChange = (e) => {
-    setName(e.target.value);
-  };
-  const handleAddressOnChange = (e) => {
-    setAddress(e.target.value);
-  };
-  const handleClick = () => {
-    handleClose();
-    const api = new Api();
-    const query = {
-      id: id,
-      name: name,
-      address: address
-    };
-    api
-      .putApartments(query)
-      .then((response) => {
-        setShowToast(true);
-        setToastMessage({ message: "更新成功", class: "text-success" });
-      })
-      .catch((error) => {
-        setShowToast(true);
-        setToastMessage({ message: "更新失敗", class: "text-danger" });
-      });
-  };
-  return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>物件情報更新</Modal.Title>
-      </Modal.Header>
-
-      <Modal.Body>
-        <Form>
-          <Form.Group controlId="name">
-            <Form.Label>物件名称</Form.Label>
-            <Form.Control
-              type="text"
-              defaultValue={name}
-              onChange={handleNameOnChange}
-            />
-          </Form.Group>
-          <Form.Group controlId="address">
-            <Form.Label>住所</Form.Label>
-            <Form.Control
-              type="text"
-              defaultValue={address}
-              onChange={handleAddressOnChange}
-            />
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={handleClick}>
-          Save changes
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
-};
 const makeSummaryChart = (
   id,
   setChartData,
@@ -154,7 +80,7 @@ const makeTableRows = (residents, setItems, apartment_id) => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     return (
-      <tr id={resident.id}>
+      <tr id={resident.id} key={resident.id}>
         <td>
           <Link
             to={"/resident?id=" + resident.id + "&apartment_id=" + apartment_id}
@@ -192,9 +118,6 @@ const ApartmentPage = ({ id }) => {
     class: "text-danger"
   });
   // show for adding user
-  const [showAdding, setShowAdding] = useState(false);
-  const handleCloseAdding = () => setShowAdding(false);
-  const handleShowAdding = () => setShowAdding(true);
   const handleModalClose = () => setModalShow(false);
   const handleModalShow = () => setModalShow(true);
   const handleApartmentNameOnChange = (e) => {
@@ -250,7 +173,7 @@ const ApartmentPage = ({ id }) => {
         makeTableRows(res.data[0].residents, setItems, id);
       });
     }
-  }, []);
+  }, [id]);
 
   return (
     <>

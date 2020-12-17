@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Api from "./AjaxHelper";
-import { Line } from "react-chartjs-2";
-import { MDBContainer } from "mdbreact";
 import Card from "react-bootstrap/Card";
 import CardDeck from "react-bootstrap/CardDeck";
 import Button from "react-bootstrap/Button";
@@ -53,6 +51,7 @@ const fetchDatas = (
       data.transfer.map((d) => {
         return (
           <CustomRow
+            key={d.id}
             id={d.id}
             transferAmount={d.transferAmount}
             transferDate={d.transferDate}
@@ -176,9 +175,6 @@ const ResidentPage = ({ id, apartment_id }) => {
   const handleTransferAmountOnChange = (e) => {
     setTransferAmount(e.target.value);
   };
-  const handleTSMonthOnChange = (e) => {
-    setTransferSatisfiedMonth(e.target.value);
-  };
   const handleGuaranteeCompanyOnChange = (e) => {
     setGuaranteeCompany(e.target.value);
   };
@@ -296,41 +292,6 @@ const ResidentPage = ({ id, apartment_id }) => {
         }, 2000);
       });
   };
-  // delete Transfer Record
-  const handleTransferDelete = (id) => {
-    const api = new Api();
-    api
-      .deleteTransfer(id)
-      .then(() => {
-        setShowToast(true);
-        setToastMessage({
-          message: "削除しました",
-          class: "text-success"
-        });
-      })
-      .catch((error) => {
-        setShowToast(true);
-        setToastMessage({
-          message: "削除失敗",
-          class: "text-danger"
-        });
-      })
-      .then(() => {
-        setTimeout(() => {
-          fetchDatas(
-            id,
-            setFullName,
-            setRoomNo,
-            setParkingLotNo,
-            setTransferAmount,
-            setTransferSatisfiedMonth,
-            setGuaranteeCompany,
-            setReadonly,
-            setTransfer
-          );
-        }, 2000);
-      });
-  };
   useEffect(() => {
     if (!id) {
       setReadonly(false);
@@ -355,7 +316,7 @@ const ResidentPage = ({ id, apartment_id }) => {
     api.getApartments(query).then((response) => {
       setApartmentName(response.data[0].name);
     });
-  }, []);
+  }, [apartment_id, id]);
   return (
     <>
       <div className="container pb-3 mb-5 pt-3 border-bottom">

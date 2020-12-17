@@ -236,7 +236,7 @@ const GuaranteeTable = ({ args, apartment_id }) => {
 
   useEffect(() => {
     getResidents(args, setIsLoaded, setItems, setError, apartment_id);
-  }, [args]);
+  }, [args, apartment_id]);
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {

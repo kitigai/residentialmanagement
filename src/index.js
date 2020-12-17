@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import App from "./App";
 import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
@@ -11,10 +12,14 @@ ReactDOM.render(
   //   <App />
   // </React.StrictMode>,
   // rootElement
-  <Router>
-    <Auth0ProviderWithHistory>
+  <Auth0Provider
+    domain="dev-mog04oe0.jp.auth0.com"
+    clientId="sMlp24UoIoNavHLO9lidTHgOARFzgxgG"
+    redirectUri={window.location.origin}
+  >
+    <Router>
       <App />
-    </Auth0ProviderWithHistory>
-  </Router>,
+    </Router>
+  </Auth0Provider>,
   rootElement
 );

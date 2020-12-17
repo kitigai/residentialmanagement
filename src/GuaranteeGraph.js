@@ -17,15 +17,6 @@ class GuaranteeGraph extends React.Component {
   }
 
   componentDidMount() {
-    const colorTable = [
-      "rgba(255, 134,159,0.4)",
-      "rgba(98,  182, 239,0.4)",
-      "rgba(255, 218, 128,0.4)",
-      "rgba(113, 205, 205,0.4)",
-      "rgba(170, 128, 252,0.4)",
-      "rgba(255, 177, 101,0.4)"
-    ];
-
     const backGroundColor = "rgba(98,  182, 239,0.4)";
     const borderColor = "rgb(98,  182, 239)";
     const api = new Api();

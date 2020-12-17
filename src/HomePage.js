@@ -5,12 +5,10 @@ import { MDBContainer } from "mdbreact";
 import Card from "react-bootstrap/Card";
 import CardDeck from "react-bootstrap/CardDeck";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
 import Table from "react-bootstrap/Table";
-import CustomToast from "./CustomToast";
 import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import "./styles.scss";
 
@@ -169,9 +167,9 @@ const CustomLineChart = ({ data }) => {
 };
 const CustomSummary = ({ target, data }) => {
   let title = target === "thisMonth" ? "今月収入" : "先月収入";
-  const targetdata = data.map((d) => {
+  const targetdata = data.map((d, idx) => {
     return (
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between" key={idx}>
         <p>{d.name}</p>
         <p className="text-secondary ">{"¥" + d[target].toLocaleString()}</p>
       </div>
@@ -188,12 +186,13 @@ const CustomSummary = ({ target, data }) => {
   );
 };
 const HomePage = () => {
+  const { user } = useAuth0();
+  console.log(user);
   const [chartData, setChartData] = useState({});
   const [summaryData, setSummaryData] = useState({});
   const [incomes, setIncomes] = useState([
     { name: "test", thisMonth: 999, lastMonth: 999 }
   ]);
-  const [incomeSummary, setIncomeSummary] = useState({});
   const [apartmentData, setApartmentData] = useState([]);
   useEffect(() => {
     makeSummaryChart(

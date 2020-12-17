@@ -239,7 +239,7 @@ const TransferTable = ({ args, apartment_id }) => {
 
   useEffect(() => {
     getResidents(args, setIsLoaded, setItems, setError, apartment_id);
-  }, [args]);
+  }, [args, apartment_id]);
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
@@ -273,26 +273,25 @@ const TransferPage = () => {
   const [apartments, setApartments] = useState([]);
   const [key, setKey] = useState(1);
 
-  const args = {
-    showtoast: showtoast,
-    setShowToast: setShowToast,
-    toastMessage: toastMessage,
-    setToastMessage: setToastMessage
-  };
-
   useEffect(() => {
+    const args = {
+      showtoast: showtoast,
+      setShowToast: setShowToast,
+      toastMessage: toastMessage,
+      setToastMessage: setToastMessage
+    };
     const api = new Api();
     api.getApartments().then((result) => {
       const tabs = result.data.map((c) => {
         return (
-          <Tab eventKey={c.id} title={c.name} id={c.id}>
+          <Tab eventKey={c.id} title={c.name} id={c.id} key={c.id}>
             <TransferTable args={args} apartment_id={c.id} />
           </Tab>
         );
       });
       setApartments(tabs);
     });
-  }, []);
+  }, [showtoast, toastMessage]);
   return (
     <>
       <header>入金確認</header>

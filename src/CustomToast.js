@@ -9,7 +9,7 @@ message={toastMessage}
 show={showtoast}
 setShow={setShowToast}
 /> */
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./styles.scss";
 import Toast from "react-bootstrap/Toast";
 import "bootstrap/dist/css/bootstrap.min.css";
