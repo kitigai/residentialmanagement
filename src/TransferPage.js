@@ -199,7 +199,7 @@ const TransferRaw = ({
   }
   return (
     <>
-      <tr className={className} onClick={handleShow}>
+      <tr className={className} onClick={handleShow} id={id}>
         <td>
           <Link to={"/resident?id=" + id}>{fullName}</Link>
         </td>
@@ -285,7 +285,7 @@ const TransferPage = () => {
     api.getApartments().then((result) => {
       const tabs = result.data.map((c) => {
         return (
-          <Tab eventKey={c.id} title={c.name}>
+          <Tab eventKey={c.id} title={c.name} id={c.id}>
             <TransferTable args={args} apartment_id={c.id} />
           </Tab>
         );

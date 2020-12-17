@@ -154,7 +154,7 @@ const makeTableRows = (residents, setItems, apartment_id) => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     return (
-      <tr>
+      <tr id={resident.id}>
         <td>
           <Link
             to={"/resident?id=" + resident.id + "&apartment_id=" + apartment_id}
@@ -177,7 +177,6 @@ const makeTableRows = (residents, setItems, apartment_id) => {
   setItems(item);
 };
 const ApartmentPage = ({ id }) => {
-  console.log(id);
   const history = useHistory();
   const [apartmentName, setApartmentName] = useState("");
   const [address, setAddress] = useState("");

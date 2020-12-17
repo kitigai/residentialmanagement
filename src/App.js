@@ -18,17 +18,15 @@ const App = () => {
   };
   return (
     <div className="app">
-      <Router>
-        <Aside
-          image={image}
-          collapsed={collapsed}
-          setCollapsed={setCollapsed}
-          rtl={rtl}
-          toggled={toggled}
-          handleToggleSidebar={handleToggleSidebar}
-        />
-        <Main handleToggleSidebar={handleToggleSidebar} />
-      </Router>
+      <Aside
+        image={image}
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
+        rtl={rtl}
+        toggled={toggled}
+        handleToggleSidebar={handleToggleSidebar}
+      />
+      <Main handleToggleSidebar={handleToggleSidebar} />
     </div>
   );
 };

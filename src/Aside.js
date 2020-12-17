@@ -9,11 +9,12 @@ import {
   SidebarContent
 } from "react-pro-sidebar";
 import { FaPenNib, FaGem, FaList, FaChartLine } from "react-icons/fa";
-import { BiTransfer } from "react-icons/bi";
+import { BiTransfer, BiLogOut } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 
 import Api from "./AjaxHelper";
+import AuthenticationButton from "./components/authentication-button";
 
 const makeMenuItem = (setItems) => {
   const api = new Api();
@@ -56,18 +57,30 @@ const Aside = ({
           ></MenuItem>
         </Menu>
       </SidebarHeader>
-      <Menu iconShape="circle">
-        <MenuItem icon={<FaChartLine />}>
-          <Link to="/">Home</Link>
-        </MenuItem>
-        <MenuItem icon={<BiTransfer />}>
-          <Link to="/transfer">入金確認</Link>
-        </MenuItem>
-        <MenuItem icon={<FaPenNib />}>
-          <Link to="/guarantee">代弁請求</Link>
-        </MenuItem>
-        <SubMenu title="物件詳細">{items}</SubMenu>
-      </Menu>
+      <SidebarContent>
+        <Menu iconShape="circle">
+          <MenuItem icon={<FaChartLine />}>
+            <Link to="/dashboard">Home</Link>
+          </MenuItem>
+          <MenuItem icon={<BiTransfer />}>
+            <Link to="/transfer">入金確認</Link>
+          </MenuItem>
+          <MenuItem icon={<FaPenNib />}>
+            <Link to="/guarantee">代弁請求</Link>
+          </MenuItem>
+          <SubMenu title="物件詳細">{items}</SubMenu>
+        </Menu>
+      </SidebarContent>
+      <SidebarFooter>
+      <div
+          className="sidebar-btn-wrapper"
+          style={{
+            padding: '20px 24px',
+          }}
+        >
+        <BiLogOut/><AuthenticationButton/>
+        </div>
+      </SidebarFooter>
     </ProSidebar>
   );
 };

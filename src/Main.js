@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./styles.scss";
 import { Switch, Route, useLocation } from "react-router-dom";
 
+import Navbar from "react-bootstrap/Button";
+
 import TransferPage from "./TransferPage";
 import GuaranteePage from "./GuaranteePage";
 import HomePage from "./HomePage";
@@ -36,7 +38,7 @@ const Main = ({ handleToggleSidebar }) => {
         <FaBars />
       </div>
       <Switch>
-        <Route exact path="/">
+        <Route exact path="/dashboard">
           <HomePage />
         </Route>
         <Route exact path="/transfer">
