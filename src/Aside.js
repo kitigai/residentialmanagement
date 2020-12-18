@@ -12,9 +12,9 @@ import { FaPenNib, FaGem, FaList, FaChartLine } from "react-icons/fa";
 import { BiTransfer, BiLogOut } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
-
 import Api from "./AjaxHelper";
-import AuthenticationButton from "./components/authentication-button";
+
+import { CustomLogoutButton } from "./components/logout-button";
 
 const makeMenuItem = (setItems) => {
   const api = new Api();
@@ -60,7 +60,7 @@ const Aside = ({
       <SidebarContent>
         <Menu iconShape="circle">
           <MenuItem icon={<FaChartLine />}>
-            <Link to="/dashboard">Home</Link>
+            <Link to="/">統計</Link>
           </MenuItem>
           <MenuItem icon={<BiTransfer />}>
             <Link to="/transfer">入金確認</Link>
@@ -72,13 +72,13 @@ const Aside = ({
         </Menu>
       </SidebarContent>
       <SidebarFooter>
-      <div
+        <div
           className="sidebar-btn-wrapper"
           style={{
             padding: '20px 24px',
           }}
         >
-        <BiLogOut/><AuthenticationButton/>
+          <CustomLogoutButton/>
         </div>
       </SidebarFooter>
     </ProSidebar>

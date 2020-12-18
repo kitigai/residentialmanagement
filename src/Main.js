@@ -36,7 +36,7 @@ const Main = ({ handleToggleSidebar }) => {
         <FaBars />
       </div>
       <Switch>
-        <Route exact path="/dashboard">
+        <Route exact path="/">
           <HomePage />
         </Route>
         <Route exact path="/transfer">

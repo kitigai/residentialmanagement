@@ -12,14 +12,15 @@ ReactDOM.render(
   //   <App />
   // </React.StrictMode>,
   // rootElement
-  <Auth0Provider
-    domain="dev-mog04oe0.jp.auth0.com"
-    clientId="sMlp24UoIoNavHLO9lidTHgOARFzgxgG"
-    redirectUri={window.location.origin}
-  >
+  // <Auth0Provider
+  //   domain="dev-mog04oe0.jp.auth0.com"
+  //   clientId="sMlp24UoIoNavHLO9lidTHgOARFzgxgG"
+  //   redirectUri={window.location.origin}
+  // >
+  <Auth0ProviderWithHistory>
     <Router>
       <App />
     </Router>
-  </Auth0Provider>,
+  </Auth0ProviderWithHistory>,
   rootElement
 );

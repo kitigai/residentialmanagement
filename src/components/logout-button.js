@@ -1,5 +1,8 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { BiTransfer, BiLogOut } from "react-icons/bi";
+
+import Button from "react-bootstrap/Button";
 
 const LogoutButton = () => {
   const { logout } = useAuth0();
@@ -17,4 +20,18 @@ const LogoutButton = () => {
   );
 };
 
+export const CustomLogoutButton = () => {
+  const { logout } = useAuth0();
+  return (
+    <a className="sidebar-btn" onClick={() =>
+      logout({
+        returnTo: window.location.origin,
+      })
+    }
+    >
+      <BiLogOut />
+      <span>ログアウト</span>
+    </a>
+  )
+}
 export default LogoutButton;
