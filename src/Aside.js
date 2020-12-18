@@ -9,7 +9,7 @@ import {
   SidebarContent
 } from "react-pro-sidebar";
 import { FaPenNib, FaGem, FaList, FaChartLine } from "react-icons/fa";
-import { BiTransfer, BiLogOut } from "react-icons/bi";
+import { BiTransfer } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import Api from "./AjaxHelper";
